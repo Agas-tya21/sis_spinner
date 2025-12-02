@@ -2,6 +2,7 @@ package com.example.sis_spinner.controller;
 
 import com.example.sis_spinner.model.Customer;
 import com.example.sis_spinner.service.CustomerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement; // [Baru] Import ini
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
+@SecurityRequirement(name = "bearerAuth") // [Baru] Gembok dipasang khusus di controller ini
 public class CustomerController {
 
     private final CustomerService service;

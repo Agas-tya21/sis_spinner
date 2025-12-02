@@ -18,8 +18,10 @@ public class OpenApiConfig {
                         .title("SIS Spinner API")
                         .version("1.0")
                         .description("Dokumentasi API untuk Aplikasi SIS Spinner"))
-                // Konfigurasi Security Scheme (JWT Bearer Auth)
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                // [HAPUS BAGIAN INI] 
+                // .addSecurityItem(new SecurityRequirement().addList("bearerAuth")) 
+                
+                // Tetap biarkan Components agar skema 'bearerAuth' terdaftar
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()

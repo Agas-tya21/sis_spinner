@@ -2,6 +2,8 @@ package com.example.sis_spinner.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue; // [Baru]
+import jakarta.persistence.GenerationType; // [Baru]
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class Admin {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID) // [Baru] Otomatis generate UUID
     @Column(name = "id", nullable = false)
     private String id;
 

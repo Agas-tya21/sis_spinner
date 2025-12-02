@@ -23,7 +23,6 @@ public class AdminService {
     public boolean authenticate(String username, String rawPassword) {
         Optional<Admin> admin = repository.findByUsername(username);
         if (admin.isPresent()) {
-            // Cek apakah password raw cocok dengan hash di DB
             return passwordEncoder.matches(rawPassword, admin.get().getPassword());
         }
         return false;
@@ -33,19 +32,17 @@ public class AdminService {
     
     // Create (Register)
     public Admin createAdmin(Admin admin) {
-        // Validasi sederhana (opsional)
         if (admin.getUsername() == null || admin.getPassword() == null) {
             throw new RuntimeException("Username dan Password wajib diisi");
         }
 
-        // Enkripsi password sebelum disimpan (Wajib!)
+        // [PENTING] Paksa ID menjadi null agar dianggap data BARU oleh Hibernate
+        // Ini mencegah error jika Swagger/Postman mengirimkan "id": "string"
+        admin.setId(null); 
+
+        // Enkripsi password
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         
-        // Set ID jika belum ada (opsional, tergantung strategi ID Anda)
-        if (admin.getId() == null) {
-            admin.setId(java.util.UUID.randomUUID().toString());
-        }
-
         return repository.save(admin);
     }
 
@@ -61,7 +58,6 @@ public class AdminService {
         return repository.findById(id).map(admin -> {
             admin.setUsername(adminDetails.getUsername());
             admin.setEmail(adminDetails.getEmail());
-            // Jika password dikirim, update & enkripsi ulang. Jika kosong, biarkan lama.
             if (adminDetails.getPassword() != null && !adminDetails.getPassword().isEmpty()) {
                 admin.setPassword(passwordEncoder.encode(adminDetails.getPassword()));
             }
@@ -72,6 +68,4 @@ public class AdminService {
     public void delete(String id) {
         repository.deleteById(id);
     }
-
-    
 }

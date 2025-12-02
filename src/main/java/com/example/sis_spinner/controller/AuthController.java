@@ -1,9 +1,10 @@
 package com.example.sis_spinner.controller;
 
 import com.example.sis_spinner.dto.LoginRequest;
+import com.example.sis_spinner.model.Admin;
 import com.example.sis_spinner.security.JwtUtil;
 import com.example.sis_spinner.service.AdminService;
-
+import io.swagger.v3.oas.annotations.Operation; // [Baru] Import ini
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +22,21 @@ public class AuthController {
         this.adminService = adminService;
     }
 
+    // Tambahkan @Operation(security = {}) untuk menghilangkan gembok
+    @Operation(summary = "Register Admin Baru", security = {}) 
     @PostMapping("/register")
     public ResponseEntity<Admin> registerAdmin(@RequestBody Admin admin) {
-        Admin savedAdmin = service.createAdmin(admin);
+        Admin savedAdmin = adminService.createAdmin(admin);
         return ResponseEntity.ok(savedAdmin);
     }
 
+    // Tambahkan @Operation(security = {}) untuk menghilangkan gembok
+    @Operation(summary = "Login Admin", security = {}) 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody LoginRequest loginData) { // Pakai LoginRequest
-        String username = loginData.getUsername(); // Pakai getter
+    public Map<String, String> login(@RequestBody LoginRequest loginData) {
+        String username = loginData.getUsername();
         String password = loginData.getPassword();
 
-        // Logika autentikasi tetap sama...
         if (adminService.authenticate(username, password)) {
             String token = jwtUtil.generateToken(username);
             return Map.of("token", token);

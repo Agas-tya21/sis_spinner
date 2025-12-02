@@ -2,6 +2,9 @@ package com.example.sis_spinner.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+// [BARU] Import untuk Generate ID
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,6 +21,8 @@ import java.time.LocalDateTime;
 public class Customer {
 
     @Id
+    // [PERBAIKAN] Tambahkan anotasi untuk generate UUID otomatis
+    @GeneratedValue(strategy = GenerationType.UUID) 
     @Column(name = "id", nullable = false)
     private String id;
 
